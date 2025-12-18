@@ -1,3 +1,5 @@
+import time
+
 # constants
 TAB = "	"
 SPACE = " "
@@ -6,6 +8,20 @@ INSERT = "INSERT INTO [TABLE] VALUES"
 
 
 # functions
+def inputs(prompt: str = "") -> str:
+    data = ""
+    chunk = input(prompt)
+    while chunk != "":
+        data += chunk + BR
+        chunk = input()
+    return data
+
+
+def time_ms() -> int:
+    """Get time now in milliseconds since Unix epoch (Jan 1, 1970)."""
+    return int(time.time() * 1000)
+
+
 def excel2grid(data: str) -> list[list[str]]:
     """
     parse data copied from excel sheet to 2D list.
@@ -20,7 +36,7 @@ def excel2grid(data: str) -> list[list[str]]:
 
 
 def row2value(row: list[str]) -> str:
-    return f"({', '.join([col if col == 'NULL' else f"'{col}'" for col in row])})"
+    return f"({', '.join([col if col == 'NULL' else f"'{col.replace("'", "''")}'" for col in row])})"
 
 
 def row2column(row: list[str]) -> str:
