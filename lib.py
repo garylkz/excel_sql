@@ -57,6 +57,9 @@ def excel_insert(
 
     isFirstRow = True
     for row in grid:
+        if row.count("NULL") == len(row):
+            continue
+
         value = row2value(row)
         if atomic:
             result += query + " " + value + ";\n"
