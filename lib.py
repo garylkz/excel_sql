@@ -25,3 +25,48 @@ def row2value(row: list[str]) -> str:
 
 def row2column(row: list[str]) -> str:
     return f"({', '.join([f'[{col}]' for col in row])})"
+
+
+def excel_insert(
+    table: str, data: str, named: bool, atomic: bool = True, ignores: set[int] = set()
+) -> str:
+    """
+    create insert query based on excel data
+
+    `named` - whether to use fist row as header
+
+    `atomic` - whether to insert 1 row of values at a time, easier for troubleshooting
+    """
+    grid = excel2grid(data)
+
+    # remove ignored columns
+    if ignores:
+        indexes = list(ignores)
+        if len(indexes) > 1:
+            indexes.sort(reverse=True)
+        for index in indexes:
+            for row in grid:
+                if index <= len(grid):
+                    row.pop(index)
+
+    header = None
+    if named:
+        header = grid.pop(0)
+    query = INSERT.replace("[TABLE]", f"[{table}] {header}" if header else f"[{table}]")
+    result = ""
+
+    isFirstRow = True
+    for row in grid:
+        value = row2value(row)
+        if atomic:
+            result += query + " " + value + ";\n"
+        else:
+            if not isFirstRow:
+                result += ","
+            result += "\n    " + value
+            if isFirstRow:
+                isFirstRow = False
+    if not atomic:
+        result = f"{query} {result};"
+
+    return result
