@@ -50,6 +50,10 @@ def row2column(row: list[str]) -> str:
     return f"({', '.join([f'[{col}]' for col in row])})"
 
 
+def table_name_of(value: str) -> str:
+    return "".join([val.capitalize() for val in value.strip().split()])
+
+
 def excel_insert(
     table: str,
     data: str,
