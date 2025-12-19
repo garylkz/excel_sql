@@ -57,15 +57,15 @@ def table_name_of(value: str) -> str:
 def excel_insert(
     table: str,
     data: str,
-    named: bool,
     ignores: set[int] = set(),
     nostrips: set[int] = set(),
+    hasHeader: bool = True,
     atomic: bool = True,
 ) -> str:
     """
     create insert query based on excel data
 
-    `named` - whether to use fist row as header
+    `hasHeader` - whether to use fist row as header
 
     `atomic` - whether to insert 1 row of values at a time, easier for troubleshooting
     """
@@ -82,7 +82,7 @@ def excel_insert(
                     row.pop(index)
 
     header = None
-    if named:
+    if hasHeader:
         header = grid.pop(0)
     query = INSERT.replace(
         "[TABLE]", f"[{table}] {row2column(header)}" if header else f"[{table}]"
