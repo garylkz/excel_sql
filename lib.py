@@ -68,7 +68,9 @@ def excel_insert(
     header = None
     if named:
         header = grid.pop(0)
-    query = INSERT.replace("[TABLE]", f"[{table}] {header}" if header else f"[{table}]")
+    query = INSERT.replace(
+        "[TABLE]", f"[{table}] {row2column(header)}" if header else f"[{table}]"
+    )
     result = ""
 
     isFirstRow = True
