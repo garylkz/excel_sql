@@ -6,10 +6,10 @@ print("""
 +----------------------------------+
 """)
 while True:
-    named = None
-    while named is None:
+    hasHeader = None
+    while hasHeader is None:
         value = input("Has header? ").lower()
-        named = (
+        hasHeader = (
             True
             if value in ("y", "yes")
             else False
@@ -39,7 +39,9 @@ while True:
 
     data = lib.inputs("Data rows:\n")
     try:
-        query = lib.excel_insert(table, data, named, ignores, nostrips)
+        query = lib.excel_insert(
+            table, data, ignores, hasHeader=hasHeader, nostrips=nostrips
+        )
         with open(f"out/{lib.time_ms()}.sql", "wb") as f:
             f.write(query.encode("UTF-8"))
         print("Done")
