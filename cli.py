@@ -20,7 +20,18 @@ while True:
     ignores = set()
     while True:
         try:
-            ignores = {int(val) for val in input("Ignores: ").split()}
+            ignores = {int(val) for val in input("Ignores (column indexes): ").split()}
+        except Exception:
+            print("Error, try again.")
+        else:
+            break
+
+    nostrips = set()
+    while True:
+        try:
+            nostrips = {
+                int(val) for val in input("Don't Strip (column indexes): ").split()
+            }
         except Exception:
             print("Error, try again.")
         else:
@@ -28,7 +39,7 @@ while True:
 
     data = lib.inputs("Data rows:\n")
     try:
-        query = lib.excel_insert(table, data, named, ignores=ignores)
+        query = lib.excel_insert(table, data, named, ignores, nostrips)
         with open(f"out/{lib.time_ms()}.sql", "wb") as f:
             f.write(query.encode("UTF-8"))
         print("Done")

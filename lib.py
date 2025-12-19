@@ -11,7 +11,7 @@ INSERT = "INSERT INTO [TABLE] VALUES"
 def inputs(prompt: str = "") -> str:
     data = ""
     chunk = input(prompt)
-    while chunk != "":
+    while chunk != "" and chunk != BR:
         data += chunk + BR
         chunk = input()
     return data
@@ -22,17 +22,24 @@ def time_ms() -> int:
     return int(time.time() * 1000)
 
 
-def excel2grid(data: str) -> list[list[str]]:
+def excel2grid(data: str, nostrips: set[int] = set()) -> list[list[str]]:
     """
     parse data copied from excel sheet to 2D list.
 
     row is separated by line break, column in separated by tabulation
     """
-    return [
-        [col.strip() for col in row.split(TAB)]
-        for row in data.split(BR)
-        if row.strip() != ""
-    ]
+    grid = []
+    rows = data.split(BR)
+    for row in rows:
+        if row.strip() == "":
+            continue
+        temp = []
+        cols = row.split(TAB)
+        for i in range(len(cols)):
+            col = cols[i]
+            temp.append(col if i in nostrips else col.strip())
+        grid.append(temp)
+    return grid
 
 
 def row2value(row: list[str]) -> str:
@@ -44,7 +51,12 @@ def row2column(row: list[str]) -> str:
 
 
 def excel_insert(
-    table: str, data: str, named: bool, atomic: bool = True, ignores: set[int] = set()
+    table: str,
+    data: str,
+    named: bool,
+    ignores: set[int] = set(),
+    nostrips: set[int] = set(),
+    atomic: bool = True,
 ) -> str:
     """
     create insert query based on excel data
@@ -53,7 +65,7 @@ def excel_insert(
 
     `atomic` - whether to insert 1 row of values at a time, easier for troubleshooting
     """
-    grid = excel2grid(data)
+    grid = excel2grid(data, nostrips)
 
     # remove ignored columns
     if ignores:
