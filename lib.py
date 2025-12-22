@@ -51,7 +51,9 @@ def row2column(row: list[str]) -> str:
 
 
 def table_name_of(value: str) -> str:
-    return "".join([val.capitalize() for val in value.strip().split()])
+    return "".join(
+        [val.capitalize() if val.islower() else val for val in value.strip().split()]
+    )
 
 
 def excel_insert(
