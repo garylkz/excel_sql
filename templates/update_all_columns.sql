@@ -21,8 +21,8 @@ SELECT @SQL
 
 -- uncomment and execute after confirm queries are OK
 -- NOTE: edit the data type as needed
-DECLARE @values NVARCHAR(MAX) = '@newValue ' + @columnType + ', @oldValue ' + @columnType
-EXEC sp_executesql @SQL, @values, @newValue = @newValue, @oldValue = @oldValue
+-- DECLARE @values NVARCHAR(MAX) = '@newValue ' + @columnType + ', @oldValue ' + @columnType
+-- EXEC sp_executesql @SQL, @values, @newValue = @newValue, @oldValue = @oldValue
 
 -- restore all checkings
 EXEC sp_MSforeachtable @command1="ALTER TABLE ? ENABLE TRIGGER ALL"
