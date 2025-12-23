@@ -6,8 +6,9 @@ GO
 
 -- parameters
 DECLARE @columnName VARCHAR(MAX) = ''
-DECLARE @oldValue VARCHAR(MAX) = ''
-DECLARE @newValue VARCHAR(MAX) = ''
+DECLARE @columnType VARCHAR(MAX) = ''
+DECLARE @oldValue VARCHAR(20) = ''
+DECLARE @newValue VARCHAR(20) = ''
 
 -- generate update queries for each table that contains the column name
 DECLARE @SQL NVARCHAR(MAX) = ''
@@ -19,7 +20,9 @@ WHERE c.name = @columnName
 SELECT @SQL
 
 -- uncomment and execute after confirm queries are OK
---EXEC sp_executesql @SQL, N'@newValue varchar(10), @oldValue varchar(10)', @newValue = @newValue, @oldValue = @oldValue
+-- NOTE: edit the data type as needed
+DECLARE @values NVARCHAR(MAX) = '@newValue ' + @columnType + ', @oldValue ' + @columnType
+EXEC sp_executesql @SQL,  @values, @newValue = @newValue, @oldValue = @oldValue
 
 -- restore all checkings
 EXEC sp_MSforeachtable @command1="ALTER TABLE ? ENABLE TRIGGER ALL"
