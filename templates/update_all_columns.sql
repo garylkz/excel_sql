@@ -1,3 +1,4 @@
+-- update value of column everywhere in database, meant to be used as a PK updator
 -- stop all checkings
 EXEC sp_MSforeachtable @command1="ALTER TABLE ? NOCHECK CONSTRAINT ALL"
 GO
@@ -6,7 +7,8 @@ GO
 
 -- parameters
 DECLARE @columnName VARCHAR(MAX) = ''
-DECLARE @columnType VARCHAR(MAX) = ''
+-- same as `oldValue` and `newValue`
+DECLARE @columnType VARCHAR(MAX) = 'VARCHAR(20)'
 DECLARE @oldValue VARCHAR(20) = ''
 DECLARE @newValue VARCHAR(20) = ''
 

@@ -1,3 +1,4 @@
+-- list out all tables that contains the column name as below
 DECLARE @columnName NVARCHAR(MAX) = '';
 
 SELECT (SCHEMA_NAME(t.schema_id) + '.' + t.name) AS 'Table'

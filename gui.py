@@ -72,7 +72,7 @@ insertOptionHeader = ttk.Checkbutton(
     insertOptions, text="Has header", variable=insertVarHeader
 )
 insertOptionAtomic = ttk.Checkbutton(
-    insertOptions, text="Atomic execution", variable=insertVarAtomic
+    insertOptions, text="Multiple inserts", variable=insertVarAtomic
 )
 ## insert actions
 insertActions = ttk.Frame(insertPage)

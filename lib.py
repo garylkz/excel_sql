@@ -37,8 +37,32 @@ def excel2grid(data: str, nostrips: set[int] = set()) -> list[list[str]]:
         cols = row.split(TAB)
         for i in range(len(cols)):
             col = cols[i]
-            temp.append(col if i in nostrips else col.strip())
+            temp.append(col)
+            # temp.append(col if i in nostrips else col.strip())
         grid.append(temp)
+
+    # multiline detection
+    # lasts = []
+    # firsts = []
+    # for i in range(len(grid)):
+    #     row = grid[i]
+    #     if row:
+    #         if row[-1] == '"':
+    #             lasts.append(i)
+    #         if row[0] == '"':
+    #             firsts.append(i)
+    #
+    # TODO: fix
+    # for i in range(min(len(lasts), len(firsts))):
+    #     start = lasts[i]
+    #     end = firsts[i]
+    #     cell = BR.join([TAB.join(grid[i]) for i in range(start + 1, end)])
+    #     for i in reversed(range(start + 1, end)):
+    #         del grid[i]
+    #     grid[start][-1] = cell
+    #     for cell in grid[start + 1][1:]:
+    #         grid[start].append(cell)
+    #     del grid[start + 1]
     return grid
 
 
